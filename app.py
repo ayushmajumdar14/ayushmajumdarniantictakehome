@@ -69,9 +69,11 @@ X_train, X_test, y_train, y_test, features, pokemon_df, type_chart_df = load_dat
 
 # Introduction Page
 if page == "Introduction":
-    st.title("🌟 Pokemon Analysis Project")
+    st.title("Pokemon Analysis Project")
     st.markdown("""
     ### Welcome to my Pokemon Analysis Project! 
+    
+    Hi, I'm Ayush Majumdar, a data scientist with a Bachelor of Science in Data Science from UC Davis and currently pursuing a Master of Science in Data Science from UC Irvine with a focus on image processing and machine learning algorithms, specifically CNN research.
     
     As a lifelong Pokemon trainer (I still remember getting my first Charmander in Pokemon Red!), 
     this project combines my passion for Pokemon with data science. Having spent countless hours 
@@ -97,7 +99,7 @@ if page == "Introduction":
 
 # EDA Page
 elif page == "EDA":
-    st.title("📊 Exploratory Data Analysis")
+    st.title("Exploratory Data Analysis")
     
     st.markdown("""
     ### Understanding Pokemon Statistics
@@ -126,7 +128,7 @@ elif page == "EDA":
 
 # SQL Analysis Page
 elif page == "SQL Analysis":
-    st.title("🗃️ SQL Analysis")
+    st.title("SQL Analysis")
     
     st.markdown("""
     ### Question 1: Find the top 3 Pokemon by total stats for each primary type
@@ -213,7 +215,7 @@ elif page == "SQL Analysis":
 
 # Type Effectiveness Page
 elif page == "Type Effectiveness":
-    st.title("⚔️ Type Effectiveness Analysis")
+    st.title("Type Effectiveness Analysis")
     
     st.markdown("""
     ### Question: Imagine a new Pokemon game where you are only allowed to collect ONE type of Pokemon. Similar to other Pokemon games, your goal is to have the strongest battlers and defenders for battles and raids. Which type will you pick? Why?
@@ -250,7 +252,7 @@ elif page == "Type Effectiveness":
     if abs(total_weight - 1.0) > 0.001:
         st.warning("Please adjust the weights so their absolute values sum to 1.0")
     else:
-        with st.spinner("🔄 Calculating type effectiveness scores..."):
+        with st.spinner("Calculating type effectiveness scores..."):
             # Calculate weights dictionary
             weights = {
                 'offensive': off_weight,
@@ -282,7 +284,7 @@ elif page == "Type Effectiveness":
             """)
             
             # Display results
-            st.success("✨ Analysis complete!")
+            st.success("Analysis complete!")
             
             # Create a more readable display DataFrame
             display_cols = [
@@ -404,12 +406,7 @@ elif page == "Type Effectiveness":
         - Dragon-type Pokemon, while powerful, are effectively checked by Fairy-types, creating a important strategic dynamic
         - Ghost-type Pokemon's immunities make them excellent pivot options in competitive battles
         
-        #### 4. Type Combination Analysis
-        - Steel/Fairy combination (like Mawile) provides resistance to 9 types and immunity to 3
-        - Ghost/Dark combination (like Sableye) provides immunity to 3 types and excellent defensive coverage
-        - Ground/Flying combination (like Landorus) negates the Ground-type weakness to Ice while maintaining STAB coverage
-        
-        #### 5. Competitive Meta Implications
+        #### 4. Competitive Meta Implications
         - Types with few resistances (like Normal) require high base stats to compensate
         - Types with many weaknesses (like Ice) need significant offensive presence to be viable
         - Defensive typing often matters more than offensive typing in competitive play
@@ -442,7 +439,7 @@ elif page == "Type Effectiveness":
         if abs(total_weight - 1.0) > 0.001:
             st.warning("Please adjust the weights so their absolute values sum to 1.0")
         else:
-            with st.spinner("🔄 Calculating type effectiveness scores..."):
+            with st.spinner("Calculating type effectiveness scores..."):
                 # Calculate weights dictionary
                 weights = {
                     'offensive': off_weight,
@@ -467,7 +464,7 @@ elif page == "Type Effectiveness":
                 display_df = display_df.sort_values('Total_Score', ascending=False)
                 
                 # Display results
-                st.success("✨ Analysis complete!")
+                st.success("Analysis complete!")
                 
                 # Create a more readable display DataFrame
                 display_cols = [
@@ -486,7 +483,7 @@ elif page == "Type Effectiveness":
                 
                 # Add tooltips
                 st.write("""
-                ℹ️ **Score Explanations:**
+                **Score Explanations:**
                 - **Offensive/Defensive**: Base attacking and defensive capabilities
                 - **Speed**: Average speed of Pokemon of this type
                 - **Effectiveness**: How effective this type's moves are against other types
@@ -590,7 +587,7 @@ elif page == "Type Effectiveness":
 
 # Machine Learning Models Page
 elif page == "Machine Learning Models":
-    st.title("🤖 Machine Learning Analysis")
+    st.title("Machine Learning Analysis")
     
     st.markdown("""
     ### Questions 3 & 4: Predicting Mega Evolution
@@ -816,16 +813,16 @@ elif page == "Machine Learning Models":
 
 # Conclusion Page
 elif page == "Conclusion":
-    st.title("🎉 Project Conclusion")
+    st.title("Project Conclusion")
     
     st.markdown("""
     ### Key Findings and Insights
     
-    Throughout this analysis, we've discovered fascinating patterns in the Pokemon world:
+    Throughout this analysis, I've discovered fascinating patterns in the Pokemon world:
     
-    1. **Type Effectiveness**: We found that [key insight about type effectiveness]
-    2. **Statistical Patterns**: [Key insight about Pokemon stats]
-    3. **Mega Evolution**: Our machine learning models revealed [key insight about Mega Evolution]
+    1. **Type Effectiveness**: I found that Dragon-type Pokemon offer the best balance of offensive and defensive capabilities, making them ideal for a single-type collection.
+    2. **Statistical Patterns**: My analysis revealed that base stat distribution follows specific patterns across types, with Dragon-types consistently showing the highest average stats.
+    3. **Mega Evolution**: My machine learning models revealed that Game Freak tends to select Pokemon with high base stat totals, particularly from earlier generations, for Mega Evolution.
     
     ### Personal Note
     
