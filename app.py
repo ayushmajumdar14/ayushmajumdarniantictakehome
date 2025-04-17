@@ -423,17 +423,17 @@ elif page == "Type Effectiveness":
         col1, col2, col3 = st.columns(3)
         
         with col1:
-            off_weight = st.slider("Offensive Power Weight", -0.5, 0.5, 0.2, 0.1, key="off_weight_1")
-            def_weight = st.slider("Defensive Power Weight", -0.5, 0.5, 0.2, 0.1, key="def_weight_1")
-            speed_weight = st.slider("Speed Weight", -0.5, 0.5, 0.15, 0.1, key="speed_weight_1")
+            off_weight = st.slider("Offensive Power Weight", -0.5, 0.5, 0.2, 0.1, key="off_weight_2")
+            def_weight = st.slider("Defensive Power Weight", -0.5, 0.5, 0.2, 0.1, key="def_weight_2")
+            speed_weight = st.slider("Speed Weight", -0.5, 0.5, 0.15, 0.1, key="speed_weight_2")
         
         with col2:
-            effect_weight = st.slider("Mean Effectiveness Weight", -0.5, 0.5, 0.15, 0.1, key="effect_weight_1")
-            poke_count_weight = st.slider("Pokemon Count Weight", -0.5, 0.5, 0.1, 0.1, key="count_weight_1")
+            effect_weight = st.slider("Mean Effectiveness Weight", -0.5, 0.5, 0.15, 0.1, key="effect_weight_2")
+            poke_count_weight = st.slider("Pokemon Count Weight", -0.5, 0.5, 0.1, 0.1, key="count_weight_2")
         
         with col3:
-            vuln_weight = st.slider("Vulnerability Score Weight", -0.5, 0.5, -0.1, 0.1, key="vuln_weight_1")
-            resist_weight = st.slider("Resistance Score Weight", -0.5, 0.5, 0.1, 0.1, key="resist_weight_1")
+            vuln_weight = st.slider("Vulnerability Score Weight", -0.5, 0.5, -0.1, 0.1, key="vuln_weight_2")
+            resist_weight = st.slider("Resistance Score Weight", -0.5, 0.5, 0.1, 0.1, key="resist_weight_2")
         
         # Calculate total weight
         total_weight = abs(off_weight) + abs(def_weight) + abs(speed_weight) + abs(effect_weight) + \
