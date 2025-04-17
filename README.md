@@ -78,4 +78,4 @@ Ayush Majumdar
 
 ## Acknowledgments
 
-Special thanks to Niantic for the opportunity to work on this Pokemon-themed data science project. As a lifelong Pokemon fan, it's been a joy to combine my passion for Pokemon with data analysis. 
+Special thanks to Niantic for the opportunity to work on this Pokemon-themed data science project. As a lifelong Pokemon fan, it's been a joy to combine my passion for Pokemon with data analysis.
