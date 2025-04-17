@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import os
 
-# Set pandas display options to show all rows and columns
+# set display options for better readability
 pd.set_option('display.max_rows', None)
 pd.set_option('display.max_columns', None)
 pd.set_option('display.width', None)
@@ -17,7 +17,7 @@ sns.set_palette("husl")
 # set the path to the pokemon-env directory
 data_dir = 'pokemon-env'
 
-# load the datasets
+# i load the datasets
 poke_df = pd.read_csv(os.path.join(data_dir, 'pokemon_data_science.csv'))
 type_df = pd.read_csv(os.path.join(data_dir, 'pokemon.csv'))
 
@@ -44,6 +44,7 @@ print("\nFirst few rows of the merged dataset:")
 print(merged_df.head())
 
 # calculate type statistics using different metrics
+# using median and 75th percentile for better representation of type strengths
 type_stats = pd.DataFrame()
 
 # for HP: use median and 75th percentile (more representative of bulk)
@@ -71,6 +72,7 @@ print("\nType Statistics (using various metrics):")
 print(type_stats.round(2))
 
 # calculate type effectiveness scores
+# considering both offensive and defensive capabilities
 effectiveness_cols = [col for col in merged_df.columns if 'effective' in col.lower()]
 type_effectiveness_scores = pd.DataFrame()
 
@@ -108,7 +110,8 @@ type_metrics = pd.concat([type_metrics, type_effectiveness_scores], axis=1)
 print("\nType Battle Metrics (with improved scoring):")
 print(type_metrics.round(3))
 
-# create visualizations
+# create visualizations to understand type distribution and relationships
+# considering both offensive and defensive capabilities
 plt.figure(figsize=(12, 8))
 effectiveness_means = merged_df.groupby('Type_1')[effectiveness_cols].mean()
 sns.heatmap(effectiveness_means, cmap='RdYlBu_r', center=1)
@@ -180,4 +183,34 @@ detailed_metrics = type_rankings[['Offensive_Power', 'Defensive_Power', 'Speed',
                                 'HP', 'Pokemon_Count', 'Total_Power',
                                 'Mean_Effectiveness', 'Vulnerability_Score',
                                 'Resistance_Score', 'Final_Score']].round(3)
-print(detailed_metrics) 
+print(detailed_metrics)
+
+# i create a scatter plot of type scores
+plt.figure(figsize=(12, 8))
+sns.scatterplot(x='Offensive_Power', y='Defensive_Power', hue='Type_1', data=merged_df)
+plt.title('Type Effectiveness Scatter Plot')
+plt.xlabel('Offensive Power')
+plt.ylabel('Defensive Power')
+plt.tight_layout()
+plt.savefig('type_effectiveness_scatter.png')
+plt.close()
+
+# analyze mega evolution patterns and their impact on type effectiveness
+# considering both offensive and defensive capabilities
+mega_evolution_counts = merged_df['Mega'].value_counts()
+print("\nMega Evolution Counts:")
+print(mega_evolution_counts)
+
+# prepare features for machine learning models
+# focusing on key stats that influence battle outcomes
+# ... existing code ...
+
+# train and evaluate models to predict battle success
+# using multiple algorithms to compare performance
+# ... existing code ...
+
+# analyze feature importance to understand key factors in battles
+# ... existing code ...
+
+# save results and visualizations for further analysis
+# ... existing code ... 

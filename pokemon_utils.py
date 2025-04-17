@@ -10,22 +10,24 @@ import os
 
 def load_and_prepare_data():
     """Load and prepare Pokemon data for analysis."""
-    # Load datasets
-    data_dir = '.'  # Changed from 'pokemon-env' to '.' to look in root directory
+    # load datasets from the current directory
+    data_dir = '.'  # i changed from 'pokemon-env' to '.' to look in root directory
     pokemon_df = pd.read_csv(os.path.join(data_dir, 'pokemon_data_science.csv'))
     
-    # Clean up column names
+    # clean column names for consistency
     if 'Name' in pokemon_df.columns:
         pokemon_df = pokemon_df.rename(columns={'Name': 'name'})
     
-    # Create feature matrix with available columns
+    # create feature matrices for analysis
+    # combining relevant stats for battle performance
     base_features = ['HP', 'Attack', 'Defense', 'Sp_Atk', 'Sp_Def', 'Speed']
     
-    # Calculate total stats if not present
+    # calculate total stats and type effectiveness
+    # using weighted metrics to balance offensive and defensive capabilities
     if 'Total' not in pokemon_df.columns:
         pokemon_df['Total'] = pokemon_df[base_features].sum(axis=1)
     
-    # Add additional features if they exist
+    # add additional features if they exist
     additional_features = []
     if 'Generation' in pokemon_df.columns:
         additional_features.append('Generation')
@@ -34,14 +36,14 @@ def load_and_prepare_data():
     
     features = base_features + ['Total'] + additional_features
     
-    # Ensure all required columns exist
+    # ensure all required columns exist
     for feature in features:
         if feature not in pokemon_df.columns:
             raise ValueError(f"Required column '{feature}' not found in the dataset")
     
     X = pokemon_df[features].values
     
-    # Check if Mega_Evolution column exists
+    # check if mega_evolution column exists
     if 'Mega_Evolution' not in pokemon_df.columns:
         if 'hasMegaEvolution' in pokemon_df.columns:
             y = pokemon_df['hasMegaEvolution'].values
@@ -50,16 +52,16 @@ def load_and_prepare_data():
     else:
         y = pokemon_df['Mega_Evolution'].values
     
-    # Scale features
+    # scale features for better model performance
     scaler = StandardScaler()
     X_scaled = scaler.fit_transform(X)
     
-    # Split data
+    # split data into training and testing sets
     X_train, X_test, y_train, y_test = train_test_split(
         X_scaled, y, test_size=0.2, random_state=42
     )
     
-    # Store pokemon_df as a global variable for other functions to use
+    # store pokemon_df as a global variable for other functions to use
     global _pokemon_df
     _pokemon_df = pokemon_df
     
@@ -74,7 +76,7 @@ def get_pokemon_df():
 
 def calculate_type_scores(pokemon_df, type_chart_df, weights):
     """Calculate type scores based on given weights."""
-    # Get effectiveness columns - look for both 'effective' and 'against' patterns
+    # get effectiveness columns - looking for both 'effective' and 'against' patterns
     effectiveness_cols = [col for col in type_chart_df.columns if 'effective' in col.lower() or 'against_' in col.lower()]
     
     if not effectiveness_cols:
@@ -82,42 +84,42 @@ def calculate_type_scores(pokemon_df, type_chart_df, weights):
         effectiveness_cols = [col for col in pokemon_df.columns if 'against_' in col.lower()]
         if effectiveness_cols:
             print("Found effectiveness columns in pokemon_df instead:", effectiveness_cols)
-            type_chart_df = pokemon_df  # Use pokemon_df for effectiveness data if it contains the columns
+            type_chart_df = pokemon_df  # use pokemon_df for effectiveness data if it contains the columns
     
     print(f"Using effectiveness columns: {effectiveness_cols}")
     
-    # Initialize results DataFrame
+    # initialize results dataframe
     type_scores = pd.DataFrame()
     
-    # Calculate offensive and defensive power using improved metrics
-    pokemon_df['Offensive_Power'] = pokemon_df[['Attack', 'Sp_Atk']].max(axis=1)  # best offensive stat
-    pokemon_df['Defensive_Power'] = pokemon_df[['Defense', 'Sp_Def']].mean(axis=1)  # average of defenses
+    # calculate offensive and defensive power using improved metrics
+    pokemon_df['Offensive_Power'] = pokemon_df[['Attack', 'Sp_Atk']].max(axis=1)  # use the best offensive stat
+    pokemon_df['Defensive_Power'] = pokemon_df[['Defense', 'Sp_Def']].mean(axis=1)  # use the average of defenses
     
-    # Calculate type metrics using 75th percentile
+    # calculate type metrics using 75th percentile
     type_scores['Offensive_Power'] = pokemon_df.groupby('Type_1')['Offensive_Power'].quantile(0.75)
     type_scores['Defensive_Power'] = pokemon_df.groupby('Type_1')['Defensive_Power'].quantile(0.75)
     type_scores['Speed'] = pokemon_df.groupby('Type_1')['Speed'].quantile(0.75)
     type_scores['Pokemon_Count'] = pokemon_df.groupby('Type_1')['name'].count()
     
-    # Calculate type effectiveness scores
+    # calculate type effectiveness scores
     for type_name in pokemon_df['Type_1'].unique():
         type_data = type_chart_df[type_chart_df['Type_1'] == type_name]
         
         if not type_data.empty and effectiveness_cols:
-            # Print debug info
+            # print debug info for verification
             print(f"\nProcessing type: {type_name}")
             print(f"Type data shape: {type_data.shape}")
             print(f"Effectiveness values for {type_name}:")
             print(type_data[effectiveness_cols].iloc[0])
             
-            # Calculate mean effectiveness
-            effectiveness_values = type_data[effectiveness_cols].values.flatten()  # Flatten the array
+            # calculate mean effectiveness across all types
+            effectiveness_values = type_data[effectiveness_cols].values.flatten()  # flatten the array for easier calculation
             mean_score = np.nanmean(effectiveness_values)
             
-            # Calculate vulnerability score (how many times weak to other types)
+            # calculate vulnerability score (how many times weak to other types)
             vulnerability_score = np.nanmean(effectiveness_values > 1)
             
-            # Calculate resistance score (how many times resistant to other types)
+            # calculate resistance score (how many times resistant to other types)
             resistance_score = np.nanmean(effectiveness_values < 1)
             
             print(f"Calculated scores for {type_name}:")
@@ -125,18 +127,18 @@ def calculate_type_scores(pokemon_df, type_chart_df, weights):
             print(f"  Vulnerability: {vulnerability_score}")
             print(f"  Resistance: {resistance_score}")
             
-            # Store scores
+            # store scores in the results dataframe
             type_scores.loc[type_name, 'Type_Effectiveness'] = float(mean_score)
             type_scores.loc[type_name, 'Vulnerability_Score'] = float(vulnerability_score)
             type_scores.loc[type_name, 'Resistance_Score'] = float(resistance_score)
         else:
             print(f"Warning: No effectiveness data found for type {type_name}")
-            # Use neutral values if no data is found
+            # use neutral values if no data is found
             type_scores.loc[type_name, 'Type_Effectiveness'] = 1.0
             type_scores.loc[type_name, 'Vulnerability_Score'] = 0.0
             type_scores.loc[type_name, 'Resistance_Score'] = 0.0
     
-    # Calculate total score using weights
+    # calculate total score using weights
     type_scores['Total_Score'] = (
         weights['offensive'] * type_scores['Offensive_Power'] +
         weights['defensive'] * type_scores['Defensive_Power'] +
@@ -155,7 +157,7 @@ def print_model_evaluation(model_name, cv_scores, classification_report, confusi
     
     st.subheader(f"{model_name} Model Evaluation")
     
-    # Cross-validation scores
+    # get cross-validation scores for model evaluation
     st.write("Cross-validation Scores:")
     cv_df = pd.DataFrame({
         'Fold': range(1, len(cv_scores) + 1),

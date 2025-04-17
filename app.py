@@ -19,10 +19,10 @@ from pokemon_utils import (
 from adaboost_model import run_adaboost_analysis
 import os
 
-# Page configuration
+# set up the streamlit app configuration
 st.set_page_config(
     page_title="Ayush Majumdar's Niantic Take Home",
-    page_icon="🔥",
+    page_icon="⚡",
     layout="wide"
 )
 
