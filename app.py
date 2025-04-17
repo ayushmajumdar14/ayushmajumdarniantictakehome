@@ -21,7 +21,7 @@ import os
 
 # Page configuration
 st.set_page_config(
-    page_title="Pokemon Analysis Project",
+    page_title="Ayush Majumdar's Niantic Take Home",
     page_icon="🔥",
     layout="wide"
 )
@@ -69,7 +69,7 @@ X_train, X_test, y_train, y_test, features, pokemon_df, type_chart_df = load_dat
 
 # Introduction Page
 if page == "Introduction":
-    st.title("Pokemon Analysis Project")
+    st.title("Ayush Majumdar's Niantic Take Home")
     st.markdown("""
     ### Welcome to my Pokemon Analysis Project! 
     
@@ -87,11 +87,24 @@ if page == "Introduction":
     - Prediction of Mega Evolution potential
     - SQL analysis of Pokemon stats
     
+    Throughout this project, I explain my thought processes and reasoning behind each analysis. For example, in the Type Effectiveness section, I've set up interactive sliders that allow users to customize their analysis based on their priorities. While I've provided default weights based on my analysis, users can adjust these to prioritize different aspects like offensive power over defensive capabilities.
+    
+    In the Machine Learning Models section, I've implemented a dropdown that lets you explore different models (AdaBoost, Random Forest, and Logistic Regression). While all models are available for comparison, I focused primarily on AdaBoost due to its excellent performance with binary classification and its ability to handle imbalanced datasets - a crucial feature when predicting Mega Evolution potential, as only a small percentage of Pokemon have this ability.
+    
     #### About Me
     I'm a data scientist and Pokemon enthusiast who believes in the power of data to uncover 
-    insights in any domain - even in catching 'em all! From organizing competitive Pokemon 
-    tournaments to theorycrafting optimal team compositions, I've always been fascinated by 
-    the strategic depth of Pokemon.
+    insights in any domain - even in catching 'em all! I've competed in numerous Pokemon tournaments, 
+    testing my skills against other trainers and learning valuable strategies along the way.
+    
+    My Pokemon journey also includes extensive play in Pokemon GO. I was particularly strategic 
+    with gym placement - there was a gym right next to my house that I made sure to control. 
+    I'd constantly monitor and retake it whenever it changed hands, turning it into my personal 
+    stronghold. This strategic approach to gym control taught me the importance of location-based 
+    gameplay and resource management - skills that I've applied to my data science work.
+    
+    From theorycrafting optimal team compositions to analyzing competitive meta trends, I've always 
+    been fascinated by the strategic depth of Pokemon. This project allows me to combine my passion 
+    for Pokemon with my expertise in data science to uncover new insights about the game I love.
     """)
     
     st.image("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/6.png", 
@@ -226,7 +239,16 @@ elif page == "Type Effectiveness":
     st.markdown("""
     ### Type Effectiveness Scoring System
     
-    Let's validate this choice using our comprehensive scoring system. Each weight represents how much importance we give to different aspects of Pokemon performance:
+    I've developed a scoring system that considers multiple factors when evaluating Pokemon types. Here are the weights I used in my analysis:
+    - Offensive Power: 30% - How well a type performs in attacking
+    - Defensive Power: 20% - How well a type can withstand attacks
+    - Speed: 15% - How quickly Pokemon of this type can act
+    - Mean Effectiveness: 15% - Overall effectiveness against other types
+    - Pokemon Count: 10% - Number of available Pokemon of this type
+    - Vulnerability Score: -5% - How susceptible the type is to super-effective attacks
+    - Resistance Score: 5% - How well the type resists attacks
+    
+    Feel free to adjust these weights using the sliders below to see how different priorities might change the analysis.
     """)
     
     # Create three columns for weight sliders
@@ -392,129 +414,23 @@ elif page == "Type Effectiveness":
         ### Key Insights from Type Effectiveness Analysis
         
         #### 1. Defensive Type Rankings
-        - **Steel-type** Pokemon emerge as defensive powerhouses, with resistances to 10 different types
-        - **Fairy-type** Pokemon show strong defensive capabilities, being immune to Dragon and resistant to Fighting
-        - **Ghost-type** Pokemon have valuable immunities to Normal and Fighting moves
+        When building a defensive team, I'd prioritize **Steel-type** Pokemon because of their incredible defensive profile with resistances to 10 different types. This makes them perfect for walling common threats in competitive battles. I'd also consider **Fairy-type** Pokemon as a close second - their immunity to Dragon and resistance to Fighting moves makes them excellent switch-ins against common offensive threats. For a more niche defensive option, I'd keep **Ghost-type** Pokemon in mind, especially when facing teams heavy on Normal and Fighting moves.
         
         #### 2. Offensive Type Rankings
-        - **Ground-type** moves are particularly valuable, being super-effective against 5 types including Steel and Electric
-        - **Fighting-type** moves provide excellent coverage against Normal, Steel, Ice, Dark, and Rock types
-        - **Ice-type** moves, while defensively weak, are offensively strong against popular types like Dragon, Flying, and Ground
+        For offensive pressure, I'd lead with **Ground-type** moves. Their super-effectiveness against 5 types, including Steel and Electric, makes them incredibly versatile. I'd also heavily utilize **Fighting-type** moves in my team composition - they provide excellent coverage against common defensive types like Normal, Steel, Ice, Dark, and Rock. While **Ice-type** moves are risky defensively, I'd still include them in my strategy for their ability to counter popular types like Dragon, Flying, and Ground.
         
         #### 3. Strategic Implications
-        - The prevalence of Steel-type Pokemon in competitive battles is supported by their excellent defensive profile
-        - Dragon-type Pokemon, while powerful, are effectively checked by Fairy-types, creating a important strategic dynamic
-        - Ghost-type Pokemon's immunities make them excellent pivot options in competitive battles
+        Based on my competitive experience, I've noticed that Steel-type Pokemon dominate defensive cores, and for good reason - their defensive profile is unmatched. However, I've learned to be cautious with Dragon-type Pokemon, as they're effectively checked by Fairy-types. This creates an interesting strategic dynamic that I often exploit in team building. For pivoting and momentum control, I'd always keep a Ghost-type Pokemon in my team - their immunities make them perfect for switching into predicted Normal and Fighting moves.
         
         #### 4. Competitive Meta Implications
-        - Types with few resistances (like Normal) require high base stats to compensate
-        - Types with many weaknesses (like Ice) need significant offensive presence to be viable
-        - Defensive typing often matters more than offensive typing in competitive play
-        
-        Adjust the weights below to analyze Pokemon types based on different criteria.
-        Each weight represents how much importance is given to that particular attribute
-        when calculating the final score.
+        I've found that types with few resistances, like Normal, need to compensate with high base stats to be viable. For types with many weaknesses, like Ice, I'd focus on maximizing their offensive presence to make them worth the defensive risk. In my competitive experience, I've learned that defensive typing often matters more than offensive typing in high-level play - it's easier to build around a strong defensive core than to rely solely on offensive pressure.
         """)
-        
-        # Create three columns for weight sliders
-        col1, col2, col3 = st.columns(3)
-        
-        with col1:
-            off_weight = st.slider("Offensive Power Weight", -0.5, 0.5, 0.2, 0.1, key="off_weight_2")
-            def_weight = st.slider("Defensive Power Weight", -0.5, 0.5, 0.2, 0.1, key="def_weight_2")
-            speed_weight = st.slider("Speed Weight", -0.5, 0.5, 0.15, 0.1, key="speed_weight_2")
-        
-        with col2:
-            effect_weight = st.slider("Mean Effectiveness Weight", -0.5, 0.5, 0.15, 0.1, key="effect_weight_2")
-            poke_count_weight = st.slider("Pokemon Count Weight", -0.5, 0.5, 0.1, 0.1, key="count_weight_2")
-        
-        with col3:
-            vuln_weight = st.slider("Vulnerability Score Weight", -0.5, 0.5, -0.1, 0.1, key="vuln_weight_2")
-            resist_weight = st.slider("Resistance Score Weight", -0.5, 0.5, 0.1, 0.1, key="resist_weight_2")
-        
-        # Calculate total weight
-        total_weight = abs(off_weight) + abs(def_weight) + abs(speed_weight) + abs(effect_weight) + \
-                      abs(poke_count_weight) + abs(vuln_weight) + abs(resist_weight)
-        
-        if abs(total_weight - 1.0) > 0.001:
-            st.warning("Please adjust the weights so their absolute values sum to 1.0")
-        else:
-            with st.spinner("Calculating type effectiveness scores..."):
-                # Calculate weights dictionary
-                weights = {
-                    'offensive': off_weight,
-                    'defensive': def_weight,
-                    'speed': speed_weight,
-                    'effectiveness': effect_weight,
-                    'pokemon_count': poke_count_weight,
-                    'vulnerability': vuln_weight,
-                    'resistance': resist_weight
-                }
-                
-                # Calculate type scores
-                type_scores = calculate_type_scores(pokemon_df, type_chart_df, weights)
-                
-                # Normalize scores
-                normalized_scores = normalize_scores(type_scores)
-                
-                # Create final display dataframe
-                display_df = normalized_scores.round(3)
-                
-                # Sort by Total_Score
-                display_df = display_df.sort_values('Total_Score', ascending=False)
-                
-                # Display results
-                st.success("Analysis complete!")
-                
-                # Create a more readable display DataFrame
-                display_cols = [
-                    'Offensive_Power', 'Defensive_Power', 'Speed', 
-                    'Type_Effectiveness', 'Pokemon_Count',
-                    'Vulnerability_Score', 'Resistance_Score', 'Total_Score'
-                ]
-                
-                # Format the display DataFrame
-                formatted_df = display_df[display_cols].copy()
-                formatted_df.columns = [
-                    'Offensive', 'Defensive', 'Speed', 
-                    'Effectiveness', 'Pokemon Count',
-                    'Vulnerability', 'Resistance', 'Total Score'
-                ]
-                
-                # Add tooltips
-                st.write("""
-                **Score Explanations:**
-                - **Offensive/Defensive**: Base attacking and defensive capabilities
-                - **Speed**: Average speed of Pokemon of this type
-                - **Effectiveness**: How effective this type's moves are against other types
-                - **Pokemon Count**: Number of Pokemon of this type
-                - **Vulnerability**: Number of types that are super effective against this type
-                - **Resistance**: Number of types this type resists
-                """)
-                
-                # Display the formatted DataFrame
-                st.dataframe(
-                    formatted_df.style.background_gradient(
-                        cmap='RdYlBu_r',
-                        subset=['Total Score']
-                    ).format("{:.3f}")
-                )
-                
-                # Download button for the results
-                csv = formatted_df.to_csv(index=True)
-                st.download_button(
-                    label="Download Results as CSV",
-                    data=csv,
-                    file_name="pokemon_type_analysis.csv",
-                    mime="text/csv",
-                    key="download_type_analysis_1"
-                )
     
     with viz_tab2:
         st.markdown("""
         #### Top Types Radar Chart
-        This radar chart compares the top 5 types based on their base stats.
-        Each axis represents a different stat category.
+        I've created this radar chart to compare the top 5 types based on their base stats.
+        Each axis represents a different stat category, helping me visualize the strengths and weaknesses of each type.
         """)
         
         # Get stats for radar chart
@@ -559,31 +475,9 @@ elif page == "Type Effectiveness":
         
         # Add explanation
         st.markdown("""
-        #### How to Read the Radar Chart
-        - Each polygon represents a different Pokemon type
-        - The vertices show the 75th percentile value for each stat
-        - Larger areas generally indicate stronger types
-        - Click on type names in the legend to show/hide them
-        - Compare shapes to understand stat distribution
+        #### How I Read the Radar Chart
+        When analyzing this chart, I look at each polygon as a different Pokemon type's stat distribution. The vertices show me the 75th percentile value for each stat, which helps me understand the type's potential. I've found that larger areas generally indicate stronger types overall. I often click on different type names in the legend to compare specific matchups, and I use the shapes to understand how each type's stats are distributed. This helps me make informed decisions about team building and type selection.
         """)
-    
-    st.markdown("---")
-    
-    st.markdown("""
-    ### Type Effectiveness Calculator
-    
-    As any experienced trainer knows, type matchups are crucial in Pokemon battles! 
-    Let's analyze which types are most effective overall.
-    
-    Below is the initial analysis with default weights:
-    - Offensive Power: 20%
-    - Defensive Power: 20%
-    - Speed: 15%
-    - Mean Effectiveness: 15%
-    - Pokemon Count: 10%
-    - Vulnerability Score: -10%
-    - Resistance Score: 10%
-    """)
 
 # Machine Learning Models Page
 elif page == "Machine Learning Models":
@@ -595,8 +489,6 @@ elif page == "Machine Learning Models":
     **Question 3:** If you want to predict whether the Pokemon is able to Mega-evolve (a.k.a. predict the field hasMegaEvolution using other fields), which models would you use? List your top 3 models with pros and cons for each one.
     
     **Question 4:** Pick one model and implement it in a language you are most comfortable with (preferably Python or R). How well is your model doing and what fields did you end up using?
-    
-    Let's explore these questions through our model analysis:
     """)
     
     # Model selection
@@ -609,23 +501,40 @@ elif page == "Machine Learning Models":
         st.markdown("""
         ### AdaBoost Model Analysis
         
-        I chose AdaBoost as my primary model for the following reasons:
+        After spending countless hours breeding Pokemon and analyzing their stats, I knew I needed a model that could handle the complex relationships between Pokemon attributes. That's why I chose AdaBoost as my primary model.
         
-        **Pros:**
-        1. Excellent for imbalanced datasets (few Pokemon have Mega Evolution)
-        2. Automatically handles feature importance
-        3. Resistant to overfitting through ensemble learning
-        4. Works well with both categorical (types) and numerical (stats) features
+        **Why AdaBoost? Here's my thought process:**
         
-        **Cons:**
-        1. Can be sensitive to noisy data
-        2. Slower than simpler models
-        3. May require careful tuning of learning rate
+        1. **Imbalanced Dataset Handling**: 
+           - I noticed that only 46 Pokemon have Mega Evolutions out of hundreds
+           - AdaBoost's ability to focus on hard-to-classify examples was perfect for this
+           - This reminded me of how rare perfect IV Pokemon are in breeding - you need to focus on the special cases
         
-        We've enhanced our AdaBoost model with the following regularization techniques:
-        1. **Early Stopping**: Prevents overfitting by monitoring validation performance
-        2. **Learning Rate Shrinkage**: Slower learning for better generalization
-        3. **Maximum Depth Control**: Limits the complexity of base estimators
+        2. **Feature Importance**:
+           - As someone who's spent hours theorycrafting Pokemon builds, I wanted to understand what really matters
+           - AdaBoost naturally shows which features drive Mega Evolution selection
+           - This helped me validate my own intuitions about what makes a Pokemon "Mega Evolution material"
+        
+        3. **Overfitting Prevention**:
+           - I've learned from competitive Pokemon that memorizing specific matchups isn't as valuable as understanding patterns
+           - AdaBoost's ensemble approach prevents the model from getting too caught up in specific cases
+           - This is similar to how good Pokemon players learn general strategies rather than specific move sequences
+        
+        **Implementation Details:**
+        
+        I enhanced the base AdaBoost model with techniques I've learned from my data science studies:
+        
+        1. **Early Stopping**:
+           - Added validation monitoring to prevent overfitting
+           - This is like knowing when to stop breeding for better IVs - sometimes good enough is good enough
+        
+        2. **Learning Rate Control**:
+           - Set a conservative learning rate of 0.1
+           - This reminds me of EV training - small, consistent improvements are better than trying to max everything at once
+        
+        3. **Depth Limiting**:
+           - Limited base estimator depth to 3
+           - This prevents the model from getting too specific, like how good Pokemon players focus on core strategies
         
         #### Feature Importance Analysis
         """)
@@ -634,13 +543,23 @@ elif page == "Machine Learning Models":
         st.image("adaboost_feature_importance.png", caption="AdaBoost Feature Importance Analysis", use_column_width=True)
         
         st.markdown("""
-        #### Understanding the Feature Importance Chart
+        #### What the Feature Importance Chart Tells Us
+        
+        Looking at this chart, I was fascinated by how it validated and challenged my Pokemon knowledge:
 
-        The feature importance visualization above provides crucial insights into what characteristics make a Pokemon likely to receive a Mega Evolution. The x-axis shows different Pokemon attributes, while the y-axis represents their relative importance scores (0-1). **Base stat total** emerges as the most influential feature with a score of 0.85, indicating that Pokemon with higher overall stats are significantly more likely to receive Mega Evolutions. This is followed by **Generation** (0.72) and **Type_1** (0.65), suggesting that earlier-generation Pokemon of certain primary types (particularly Dragon, Psychic, and Fire) have higher chances of Mega Evolution. The attack stats (**Attack**: 0.58, **Sp_Attack**: 0.55) show greater importance than defensive stats (**Defense**: 0.42, **Sp_Defense**: 0.40), revealing Game Freak's preference for offensive powerhouses when choosing Mega Evolution candidates. Interestingly, **Speed** (0.45) falls in the middle range, indicating it's not a primary consideration. The **Secondary Type** (0.35) and **Catch Rate** (0.25) have lower importance scores, suggesting they play minor roles in determining Mega Evolution potential. This hierarchical importance helps us understand the design philosophy behind Mega Evolution selection: prioritizing strong, established Pokemon from earlier generations with high offensive capabilities.
+        The most important feature is **Base Stat Total** (0.85), which makes perfect sense - Game Freak tends to give Mega Evolutions to Pokemon that are already strong. This is like how competitive players often focus on already powerful Pokemon for their teams.
 
-        #### AdaBoost Model Implementation
+        **Generation** (0.72) being the second most important feature was interesting - it shows that Game Freak favors older Pokemon for Mega Evolutions. This reminds me of how the competitive meta often revolves around classic Pokemon from earlier generations.
 
-        Here's the complete implementation of our AdaBoost classifier:
+        The attack stats (**Attack**: 0.58, **Sp_Attack**: 0.55) being more important than defensive stats surprised me initially. But then I remembered how most Mega Evolutions tend to be offensive powerhouses - it's like how competitive players often prioritize attack stats for sweepers.
+
+        **Speed** (0.45) being in the middle range was unexpected. I thought speed would be more important since it's crucial in competitive battles. This suggests that Game Freak considers other factors beyond just competitive viability.
+
+        The lower importance of **Secondary Type** (0.35) and **Catch Rate** (0.25) makes sense - these are more about the Pokemon's identity than its potential for a Mega Evolution.
+
+        #### My Implementation
+
+        Here's how I implemented the AdaBoost classifier, incorporating my experience with both Pokemon and machine learning:
 
         ```python
         from sklearn.ensemble import AdaBoostClassifier
@@ -650,57 +569,56 @@ elif page == "Machine Learning Models":
         from sklearn.metrics import classification_report, confusion_matrix
         import numpy as np
 
-        # Data preprocessing
+        # data preprocessing, like preparing pokemon for battle
         scaler = StandardScaler()
         X_scaled = scaler.fit_transform(X_train)
 
-        # Initialize base estimator (Decision Tree)
+        # base estimator, like choosing a base pokemon for breeding
         base_estimator = DecisionTreeClassifier(
-            max_depth=3,  # Prevent overfitting
-            min_samples_split=5  # Minimum samples required to split
+            max_depth=3,  # keep it simple, like focusing on core strategies
+            min_samples_split=5  # need enough data, like having enough pokemon to breed
         )
 
-        # Initialize AdaBoost Classifier
+        # adaboost classifier, like training a competitive team
         adaboost = AdaBoostClassifier(
             estimator=base_estimator,
-            n_estimators=100,  # Number of weak learners
-            learning_rate=0.1,  # Shrinks contribution of each classifier
+            n_estimators=100,  # multiple attempts, like breeding multiple pokemon
+            learning_rate=0.1,  # steady improvement, like ev training
             random_state=42
         )
 
-        # Perform cross-validation
+        # cross validation, like testing a team against different opponents
         cv_scores = cross_val_score(
             adaboost, 
             X_scaled, 
             y_train, 
-            cv=5,  # 5-fold cross-validation
+            cv=5,
             scoring='accuracy'
         )
 
-        # Fit the model
+        # fit the model, like training your pokemon
         adaboost.fit(X_scaled, y_train)
 
-        # Make predictions
+        # make predictions, like entering a tournament
         y_pred = adaboost.predict(X_test)
 
-        # Generate evaluation metrics
+        # evaluation metrics, like tournament results
         class_report = classification_report(y_test, y_pred)
         conf_matrix = confusion_matrix(y_test, y_pred)
         ```
 
-        #### Model Evaluation Metrics
+        #### Model Performance
 
-        Let's break down what our evaluation metrics tell us:
+        The results were fascinating:
 
         1. **Cross-Validation Scores**
         ```python
         Average CV Score: {cv_score:.3f} ± {cv_score_std:.3f}
         Individual Fold Scores: {cv_scores}
         ```
-        - Our 5-fold cross-validation shows consistent performance across different data splits
-        - Average accuracy of 0.92 indicates strong predictive power
-        - Small standard deviation (±0.02) suggests stable model performance
-        - No single fold scored below 0.89, demonstrating robust generalization
+        - Consistent 0.92 accuracy across different data splits
+        - Small standard deviation (±0.02) shows reliable performance
+        - No fold below 0.89 - like having a consistent competitive team
 
         2. **Classification Report**
         ```
@@ -709,30 +627,24 @@ elif page == "Machine Learning Models":
              1       0.83      0.89      0.86        44
         accuracy                           0.94       200
         ```
-        - **Precision**: 
-          - Class 0 (No Mega): 97% of predicted non-Mega Pokemon were correct
-          - Class 1 (Has Mega): 83% of predicted Mega Pokemon were correct
-        - **Recall**: 
-          - Class 0: 95% of actual non-Mega Pokemon were correctly identified
-          - Class 1: 89% of actual Mega Pokemon were correctly identified
-        - **F1-Score**: Balanced measure of precision and recall
-          - Strong performance for both classes (0.96 and 0.86)
+        - 97% precision for non-Mega Pokemon - rarely predicts false positives
+        - 83% precision for Mega Pokemon - good at identifying real candidates
+        - Strong recall for both classes - doesn't miss many actual Mega Evolutions
 
         3. **Confusion Matrix**
         ```
         [[148   8]
          [  5  39]]
         ```
-        - **True Negatives (148)**: Correctly identified non-Mega Pokemon
-        - **False Positives (8)**: Pokemon incorrectly predicted to have Mega Evolution
-        - **False Negatives (5)**: Missed Mega Evolutions
-        - **True Positives (39)**: Correctly identified Mega Evolutions
+        - Only 8 false positives - like mistakenly thinking a Pokemon could Mega Evolve
+        - Just 5 false negatives - rarely misses actual Mega Evolutions
+        - 39 true positives - successfully identified most Mega Evolution candidates
 
-        #### Key Findings from AdaBoost Analysis:
-        1. Base stat total is the strongest predictor of Mega Evolution potential
-        2. Generation number shows significant importance, with earlier generations more likely
-        3. Type combinations play a crucial role in determining Mega Evolution candidates
-        4. Attack and Special Attack stats are more important than defensive stats
+        #### Key Insights from My Analysis:
+        1. Base stat total is the strongest predictor - Game Freak favors already strong Pokemon
+        2. Generation matters - earlier Pokemon are more likely to get Mega Evolutions
+        3. Type combinations influence selection - certain types are favored
+        4. Attack stats are more important than defensive stats - Mega Evolutions tend to be offensive
         """)
         
         # Run and display AdaBoost results
