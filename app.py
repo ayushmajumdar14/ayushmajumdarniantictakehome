@@ -29,6 +29,8 @@ st.set_page_config(
 # Custom CSS
 st.markdown("""
     <style>
+    @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+    
     .main {
         padding: 2rem;
     }
@@ -39,6 +41,22 @@ st.markdown("""
         background-color: #f0f2f6;
         padding: 1rem;
         border-radius: 0.5rem;
+    }
+    h1, h2, h3 {
+        font-family: 'Press Start 2P', cursive;
+        color: #2c3e50;
+    }
+    h1 {
+        font-size: 24px;
+        margin-bottom: 1.5rem;
+    }
+    h2 {
+        font-size: 20px;
+        margin-bottom: 1.2rem;
+    }
+    h3 {
+        font-size: 16px;
+        margin-bottom: 1rem;
     }
     </style>
 """, unsafe_allow_html=True)
