@@ -11,7 +11,7 @@ import os
 def load_and_prepare_data():
     """Load and prepare Pokemon data for analysis."""
     # Load datasets
-    data_dir = 'pokemon-env'
+    data_dir = '.'  # Changed from 'pokemon-env' to '.' to look in root directory
     pokemon_df = pd.read_csv(os.path.join(data_dir, 'pokemon_data_science.csv'))
     
     # Clean up column names
